@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'favorites/create'
+  get 'favorites/destroy'
+  get 'relationships/create'
+  get 'relationships/destroy'
   root to: 'toppages#index'
   resources :users, only: [:index, :show, :new, :create, :destroy, :edit, :update] do
     member do
