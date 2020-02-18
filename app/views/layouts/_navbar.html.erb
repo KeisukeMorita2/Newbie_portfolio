@@ -19,7 +19,11 @@
               <li class="dropdown-item"><%= link_to edit_user_path(current_user) do %><i class="far fa-edit"></i>&thinsp;ユーザー情報変更<% end %></li>
               <li class="dropdown-divider"></li>
               <li class="dropdown-item"><%= link_to session_path(current_user), method: :delete do %><i class="fas fa-sign-out-alt"></i>&thinsp;ログアウト<% end %></li>
+              <% unless current_user.email == "guest@example.com" %>
               <li class="dropdown-item"><%= link_to user_path(current_user), method: :delete do %><i class="fas fa-user-times"></i>&thinsp;退会<% end %></li>
+              <% else %>
+              <button type="button" class="btn btn-destroy btn-block" disabled>テストユーザは退会できません</button>
+              <% end %>
             </ul>
           </li>
         <% else %>
