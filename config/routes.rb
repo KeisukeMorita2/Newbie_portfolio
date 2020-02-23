@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
-  resources :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'questions#index'
+  resources :users, only: [:index, :show, :new, :create, :destroy, :edit, :update] do
+    member do
+      get :followings
+      get :followers
+      get :likes
+    end
+  end
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :questions, only: [:create, :destroy, :index, :new, :show, :edit, :update]
+  resources :relationships, only: [:create, :destroy]
+  resources :favorites, only: [:create, :destroy]
 end

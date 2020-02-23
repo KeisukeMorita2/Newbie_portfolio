@@ -1,0 +1,87 @@
+body{
+  background-color: aliceblue;
+}
+.container-fluid{
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+
+}
+.jambotron{
+  background: image-url("qes.jpg") center no-repeat;
+  background-size: cover;
+  height: 550px;
+}
+.text-position{
+  position: absolute;
+  top: 100px;
+  left: 30px;
+  color: white;
+}
+footer{
+  height: 50px;
+  background-color: #000000a3;
+  color: #d5d5d5;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.user-bar{
+  margin: 5px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.user-page{
+  background-color: white;
+  margin: 20px;
+}
+.user-show-image{
+  height: auto;
+  margin: auto;
+  margin-top: 10px;
+  display: flex;
+  max-width: 60%;
+}
+.question-index{
+  height: 70px;
+  margin: auto;
+  margin-top: 10px;
+  display: flex;
+  max-width: 60%;
+}
+.user-image{
+  height: 70px;
+  width: 70px;
+}
+.size{
+  font-size: 130%;
+}
+.user-show-nav{
+  text-align: center;
+}
+.question-image{
+  height: 50px;
+  width: 50px;
+}
+.q-page{
+  height: auto;
+  background-color: white;
+  border: solid 1px #ffc1074d;
+  padding: 30px;
+  margin: 30px;
+}
+.user-form{
+  background-color: white;
+  padding: 20px;
+  margin: 20px 50px;
+  background: light;
+  border: solid 1px;
+}
+h1,h2,p,title{
+  font-family: "M PLUS Rounded 1c";
+}
+.nav-item, .card-title, .test-muted ,.btn, .size{
+  font-family: "M PLUS Rounded 1c";
+}
