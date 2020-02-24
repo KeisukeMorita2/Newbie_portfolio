@@ -1,13 +1,12 @@
-class ApplicationController < ActionController::Base
+# frozen_string_literal: true
 
+class ApplicationController < ActionController::Base
   include SessionsHelper
 
   private
 
   def require_user_logged_in
-    unless logged_in?
-      redirect_to new_session_url
-    end
+    redirect_to new_session_url unless logged_in?
   end
 
   def counts(user)

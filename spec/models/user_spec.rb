@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -15,7 +17,7 @@ RSpec.describe User, type: :model do
     it 'ユーザー名がない' do
       user = User.create(name: nil)
       user.valid?
-      expect(user.errors[:name]).to include "を入力してください"
+      expect(user.errors[:name]).to include 'を入力してください'
     end
 
     it 'ユーザー名が２１文字以上' do
@@ -27,7 +29,7 @@ RSpec.describe User, type: :model do
     it 'メールアドレスがない' do
       user = User.create(email: nil)
       user.valid?
-      expect(user.errors[:email]).to include "を入力してください"
+      expect(user.errors[:email]).to include 'を入力してください'
     end
 
     it 'メールアドレスに@がない' do
@@ -39,7 +41,7 @@ RSpec.describe User, type: :model do
     it 'パスワードがない' do
       user = User.create(password: nil)
       user.valid?
-      expect(user.errors[:password]).to include "を入力してください"
+      expect(user.errors[:password]).to include 'を入力してください'
     end
 
     it '登録するEメールが重複している' do
