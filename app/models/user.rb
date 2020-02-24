@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
-  before_save { self.email.downcase! }
+  before_save { email.downcase! }
   validates :name, presence: true, length: { maximum: 20 }
   validates :email, presence: true, length: { maximum: 100 },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
-                    uniqueness: { case_sensitive: false}
+                    uniqueness: { case_sensitive: false }
   has_secure_password
 
   has_many :favorites, dependent: :destroy
@@ -16,18 +18,16 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   def follow(other_user)
-    unless self == other_user
-      self.relationships.find_or_create_by(follow_id: other_user.id)
-    end
+    relationships.find_or_create_by(follow_id: other_user.id) unless self == other_user
   end
 
   def unfollow(other_user)
-    relationship = self.relationships.find_by(follow_id: other_user.id)
-    relationship.destroy if relationship
+    relationship = relationships.find_by(follow_id: other_user.id)
+    relationship&.destroy
   end
 
   def following?(other_user)
-    self.followings.include?(other_user)
+    followings.include?(other_user)
   end
 
   def favorite(question)
@@ -36,10 +36,10 @@ class User < ApplicationRecord
 
   def unfavorite(question)
     favorite = favorites.find_by(question_id: question.id)
-    favorite.destroy if favorite
+    favorite&.destroy
   end
 
   def like?(question)
-    self.likes.include?(question)
+    likes.include?(question)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe '問題管理機能', type: :system do
@@ -20,9 +22,9 @@ RSpec.describe '問題管理機能', type: :system do
     context 'ユーザーAがログインしているとき' do
       let(:login_user) { user_a }
 
-    before do
-      visit questions_path
-    end
+      before do
+        visit questions_path
+      end
 
       it_behaves_like 'ユーザーAが作成した問題が表示される'
     end
@@ -30,9 +32,9 @@ RSpec.describe '問題管理機能', type: :system do
     context 'ユーザーBがログインしているとき' do
       let(:login_user) { user_b }
 
-    before do
-      visit questions_path
-    end
+      before do
+        visit questions_path
+      end
 
       it_behaves_like 'ユーザーAが作成した問題が表示される'
     end
@@ -122,7 +124,6 @@ RSpec.describe '問題管理機能', type: :system do
       end
 
       context '他ユーザーの問題は編集できない' do
-
         before do
           visit question_path(question_a)
         end
@@ -133,7 +134,6 @@ RSpec.describe '問題管理機能', type: :system do
       end
 
       context 'いずれかのフォーム欄が空欄' do
-
         before do
           visit question_path(@question)
           click_link '編集'

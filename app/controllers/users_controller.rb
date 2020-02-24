@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, only: [:index, :show, :edit, :followings, :followers, :likes]
+  before_action :require_user_logged_in, only: %i[index show edit followings followers likes]
 
   def index
     @users = User.order(id: :desc).page(params[:page]).per(10)
