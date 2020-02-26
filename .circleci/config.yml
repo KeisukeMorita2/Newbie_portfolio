@@ -15,16 +15,11 @@ jobs:
   test:
     docker:
       - image: circleci/ruby:2.5.3-stretch-node
-        environment:
-          BUNDLE_JOBS: 3
-          BUNDLE_RETRY: 3
-          BUNDLE_PATH: vendor/bundle
-          RAILS_ENV: test
-          MYSQL_HOST: 127.0.0.1
-          MYSQL_USERNAME: 'newbie_user'
-          MYSQL_PASSWORD: 'newbie_password'
-          MYSQL_DATABASE: webapp_test
       - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_USERNAME: 'root'
+          MYSQL_DATABASE: webapp_test
 
     working_directory: ~/Newbie
     steps:
