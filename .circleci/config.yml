@@ -1,0 +1,77 @@
+version: 2
+
+jobs:
+  checkout_code:
+    docker:
+      - image: circleci/ruby:2.5.3-stretch-node
+    working_directory: ~/Newbie
+    steps:
+      - checkout
+      - save_cache:
+          key: v2-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/Newbie
+
+  test:
+    docker:
+      - image: circleci/ruby:2.5.3-stretch-node
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+          MYSQL_HOST: 127.0.0.1
+      - image: circleci/mysql:5.7
+          MYSQL_USERNAME: 'root'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_DATABASE: webapp_test
+    working_directory: ~/Newbie
+    steps:
+      - checkout
+      - run:
+          name: Bundler を指定
+          command: bundle -v
+      - restore_cache:
+          keys:
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
+      - run:
+          name: バンドルインストール
+          command: bundle check || bundle install
+      - save_cache:
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - restore_cache:
+          keys:
+            - rails-demo-yarn-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-
+      - run:
+          name: Yarn をインストール
+          command: yarn install --cache-folder ~/.cache/yarn
+      - save_cache:
+          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: DB を待機
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: データベースをセットアップ
+          command: bin/rails db:schema:load --trace
+      - run:
+          name: RSpec を並列実行
+          command: |
+            bundle exec rspec --profile 10 \
+                              --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout_code
+      - test:
+          requires:
+            - checkout_code

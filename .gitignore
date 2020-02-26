@@ -28,13 +28,14 @@ config/master.key
 # TODO Comment out these rules if environment variables can be committed
 .env
 .env.*
+/environments/*
 
 ## Environment normalization:
 /.bundle
 /vendor/bundle
 
 # these should all be checked in to normalize the environment:
-# Gemfile.lock, .ruby-version, .ruby-gemset
+.ruby-version, .ruby-gemset
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
