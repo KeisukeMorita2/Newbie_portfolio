@@ -22,6 +22,7 @@ jobs:
           RAILS_ENV: test
           MYSQL_HOST: 127.0.0.1
       - image: circleci/mysql:5.7
+        environment:
           MYSQL_USERNAME: 'root'
           MYSQL_PASSWORD: 'password'
           MYSQL_DATABASE: webapp_test
