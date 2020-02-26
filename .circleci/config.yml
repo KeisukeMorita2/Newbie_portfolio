@@ -15,12 +15,12 @@ jobs:
   test:
     docker:
       - image: circleci/ruby:2.5.3-stretch-node
+        environment:
+          - RAILS_ENV: test
       - image: circleci/mysql:5.7
         environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_USERNAME: 'root'
-          MYSQL_DATABASE: webapp_test
-
+          - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          - MYSQL_ROOT_HOST: '%'
     working_directory: ~/Newbie
     steps:
       - checkout
@@ -52,6 +52,11 @@ jobs:
                               --out test_results/rspec.xml \
                               --format progress \
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      - store_test_results:
+          path: /tmp/circleci-results
+      - store_artifacts:
+          path: /tmp/circleci-results
+          destination: circleci-results
 workflows:
   version: 2
   build_and_test:
