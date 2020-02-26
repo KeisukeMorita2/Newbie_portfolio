@@ -23,8 +23,8 @@ jobs:
           MYSQL_HOST: 127.0.0.1
       - image: circleci/mysql:5.7
         environment:
-          MYSQL_USERNAME: 'root'
-          MYSQL_PASSWORD: 'password'
+          MYSQL_USERNAME: 'newbie_user'
+          MYSQL_PASSWORD: 'newbie_password'
           MYSQL_DATABASE: webapp_test
     working_directory: ~/Newbie
     steps:
@@ -43,20 +43,6 @@ jobs:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-      - restore_cache:
-          keys:
-            - rails-demo-yarn-{{ checksum "yarn.lock" }}
-            - rails-demo-yarn-
-      - run:
-          name: Yarn をインストール
-          command: yarn install --cache-folder ~/.cache/yarn
-      - save_cache:
-          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: DB を待機
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: データベースをセットアップ
           command: bin/rails db:schema:load --trace
