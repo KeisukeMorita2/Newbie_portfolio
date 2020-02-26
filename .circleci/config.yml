@@ -16,16 +16,11 @@ jobs:
     docker:
       - image: circleci/ruby:2.5.3-stretch-node
         environment:
-          BUNDLE_JOBS: 3
-          BUNDLE_RETRY: 3
-          BUNDLE_PATH: vendor/bundle
-          RAILS_ENV: test
-          MYSQL_HOST: 127.0.0.1
-      - image: circleci/mysql:5.7
+          - RAILS_ENV: test
+      - image: mysql:5.7
         environment:
-          MYSQL_USERNAME: 'root'
-          MYSQL_PASSWORD: 'password'
-          MYSQL_DATABASE: webapp_test
+          - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          - MYSQL_ROOT_HOST: '%'
     working_directory: ~/Newbie
     steps:
       - checkout
@@ -43,31 +38,21 @@ jobs:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-      - restore_cache:
-          keys:
-            - rails-demo-yarn-{{ checksum "yarn.lock" }}
-            - rails-demo-yarn-
+      - run: rm ./config/database.yml
+      - run: mv ./config/database.yml.ci ./config/database.yml
       - run:
-          name: Yarn をインストール
-          command: yarn install --cache-folder ~/.cache/yarn
-      - save_cache:
-          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
+          name: DBを待機
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
       - run:
-          name: DB を待機
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          name: DBを作成
+          command: bundle exec rake db:create
       - run:
           name: データベースをセットアップ
           command: bin/rails db:schema:load --trace
       - run:
           name: RSpec を並列実行
           command: |
-            bundle exec rspec --profile 10 \
-                              --format RspecJunitFormatter \
-                              --out test_results/rspec.xml \
-                              --format progress \
-                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            bundle exec rspec
 workflows:
   version: 2
   build_and_test:
