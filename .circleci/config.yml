@@ -21,11 +21,11 @@ jobs:
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
           MYSQL_HOST: 127.0.0.1
-      - image: circleci/mysql:5.7
-        environment:
           MYSQL_USERNAME: 'newbie_user'
           MYSQL_PASSWORD: 'newbie_password'
           MYSQL_DATABASE: webapp_test
+      - image: circleci/mysql:5.7
+
     working_directory: ~/Newbie
     steps:
       - checkout
@@ -43,6 +43,9 @@ jobs:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+      - run:
+          name: DBを待機
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
       - run:
           name: データベースをセットアップ
           command: bin/rails db:schema:load --trace
