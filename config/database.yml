@@ -2,8 +2,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch('MYSQL_USER') %>
-  password: <%= ENV.fetch('MYSQL_PASSWORD') %>
+  username: <%= ENV['MYSQL_USER'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
   host: db
 
 development:
@@ -21,4 +21,4 @@ production:
   host: <%= Rails.application.credentials.rds[:host] %>
   database: <%= Rails.application.credentials.rds[:database] %>
   username: <%= Rails.application.credentials.rds[:username] %>
-  password: <%= Rails.application.credentials.rds[:password] %>  
+  password: <%= Rails.application.credentials.rds[:password] %>
