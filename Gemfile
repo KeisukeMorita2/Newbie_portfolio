@@ -49,3 +49,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'kaminari'
 gem 'rails-i18n'
 gem 'ransack'
+gem "aws-sdk-s3", require: false
