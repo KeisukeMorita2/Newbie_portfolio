@@ -1,24 +1,58 @@
-# README
+# Newbie
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Newbieとはユーザー同士が問題を作り、解くことのできるサービスです。  
+プログラミング初心者の方が抱える多くの疑問を共有し、今後の学習に役立ててもらえればと思います。
 
-Things you may want to cover:
+アプリのリンク：<http://newbie-aws.work/>  
+簡単ログインをご利用頂けます。  
+右上ログインからゲストログインをクリックしてください。
 
-* Ruby version
+# 主な機能
+* ユーザー機能(userモデル)
+  * ユーザー登録機能
+  * ユーザー一覧機能
+  * ユーザー編集機能
+  * ユーザー削除機能(ゲストは退会できません)
+* ログイン/ログアウト機能(session)
+* 問題機能(questionモデル)
+  * 問題作成機能
+  * 問題一覧機能
+  * 問題編集機能
+  * 問題削除機能
+* フォロー機能(relationshipモデル)
+  * フォロー一覧機能
+  * フォロー解除機能
+* いいね機能(favoriteモデル)
+  * いいね一覧機能
+  * いいね解除機能
+* 問題検索機能(ransack)
+* ページネーション機能(kaminari)
+* 画像アップロード機能(active_storage)
 
-* System dependencies
 
-* Configuration
+# AWS構成図
+![画像](https://cacoo.com/diagrams/1T4sN1eKaz0MUIQP-4B5E5.png)
 
-* Database creation
+# 使用した技術
+* Ruby 2.5.3
+* Ruby on Rails 5.2.3
+* Bootstrap,Sass
+* Rspec
+* RuboCop
+* Nginx
+* MySQL 5.7
+* GitHub
+* Docker
+* docker-compose
+* AWS(VPC,EC2,RDS,Route53,S3)
+* CircleCI
 
-* Database initialization
+## 意識したこと
+環境に依存しない開発を行うため、dockerとdocker-composeを用いてサービス開発をしました。  
+本番環境にはAWS各種サービスを使ってwebサーバー、appサーバー、dbサーバーの構造でリクエスト処理を行うようにしました。  
+また、実務でのgitの使われ方を意識して作業用ブランチからプルリクエスト→masterブランチにmergeの流れで開発を進めました。その際にはcircleCIでRSpecが起動するようにしました。
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 今後の改善
+* 問題作成にフロントエンドの技術を一層取り入れてユーザーの楽しみを増やす。
+* 自動テストだけでなく自動デプロイを実現する。
+* コンテナオーケストレーションサービスを使って、コンテナ管理を容易にする。
